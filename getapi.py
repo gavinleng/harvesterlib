@@ -4,6 +4,7 @@ import pandas as pd
 
 import openurl
 import now
+import naturalkeys as nkeys
 
 
 def getapi(date, colFields, logfile, errfile):
@@ -40,6 +41,7 @@ def getapi(date, colFields, logfile, errfile):
             nDate = nMonth + 12 * nYear
             minusDate.append('latestMINUS' + str(nDate))
     minusDate = list(set(minusDate))
+    minusDate.sort(key=nkeys.natural_keys)
     dateString = ','.join(minusDate)
 
     # get the required selection string
