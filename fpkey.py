@@ -5,7 +5,7 @@ import hashlib
 
 def fpkey(data, keyCol):
     pkey = []
-    for i in range(data.shape[0]):
+    for i in data.index.tolist():
         mystring = ''
         for j in keyCol:
             mystring += str(data[j][i])

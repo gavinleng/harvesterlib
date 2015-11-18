@@ -9,7 +9,7 @@ def checkdigit(data, field, logfile):
         inrow[j] = []
 
     for j in field:
-        for i in range(len(data)):
+        for i in data.index.tolist():
             if str(data[j][i]).strip().isdigit() != True:
                 cData = str(data[j][i]).strip().split('.')
                 if not ((len(cData) == 2)and(cData[0].isdigit())and(cData[1].isdigit())):

@@ -20,6 +20,16 @@ def save(raw_data, col, keyCol, digitCheckCol, noDigitRemoveFields, dName, logfi
     print('data cleaning------')
     df = dclean.stripcsv(df, col)
 
+    # remove the cell with no digit data
+    check_field = [x.title() for x in digitCheckCol]
+    remove_field = [x.title() for x in noDigitRemoveFields]
+    df = dclean.nodigit(df, check_field, remove_field, logfile)
+
+    # delete the duplicate data
+    logfile.write(str(now.now()) + ' check and delete the duplicate data\n')
+    print('check and delete the duplicate data------')
+    df = df.drop_duplicates(col, take_last=True)
+
     # create primary key by md5 for each row
     logfile.write(str(now.now()) + ' create primary key\n')
     print('create primary key------')
@@ -28,11 +38,6 @@ def save(raw_data, col, keyCol, digitCheckCol, noDigitRemoveFields, dName, logfi
     df[col[-1]] = fpkey.fpkey(df, keyCol)
     logfile.write(str(now.now()) + ' create primary key end\n')
     print('create primary key end------')
-
-    # remove the cell with no digit data
-    check_field = [x.title() for x in digitCheckCol]
-    remove_field = [x.title() for x in noDigitRemoveFields]
-    df = dclean.nodigit(df, check_field, remove_field, logfile)
 
     # save to file
     df.to_csv(dName, index=False)
