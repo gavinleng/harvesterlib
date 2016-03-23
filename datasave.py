@@ -31,13 +31,16 @@ def save(raw_data, col, keyCol, digitCheckCol, noDigitRemoveFields, dName, logfi
     df = df.drop_duplicates(col, take_last=True)
 
     # create primary key by md5 for each row
-    logfile.write(str(now.now()) + ' create primary key\n')
-    print('create primary key------')
-    col += ['pkey']
-    keyCol = [x.title() for x in keyCol]
-    df[col[-1]] = fpkey.fpkey(df, keyCol)
-    logfile.write(str(now.now()) + ' create primary key end\n')
-    print('create primary key end------')
+    if len(keyCol) != 0:
+        logfile.write(str(now.now()) + ' create primary key\n')
+        print('create primary key------')
+        col += ['pkey']
+        keyCol = [x.title() for x in keyCol]
+        df[col[-1]] = fpkey.fpkey(df, keyCol)
+        logfile.write(str(now.now()) + ' create primary key end\n')
+        print('create primary key end------')
+    else:
+        print('no primary key------')
 
     # save to file
     df.to_csv(dName, index=False)
